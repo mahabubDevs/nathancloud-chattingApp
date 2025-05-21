@@ -53,7 +53,7 @@ const createUserIntoDb = async (payload: User) => {
       email: true,
       phoneNumber: true,
       role: true,
-      otp: true,
+      otp: true, 
       createdAt: true,
       updatedAt: true,
     },
