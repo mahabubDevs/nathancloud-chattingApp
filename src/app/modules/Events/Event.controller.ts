@@ -8,7 +8,8 @@ import { fileUploader } from "../../../helpars/fileUploader";
 const createEvent = catchAsync(async (req: Request, res: Response) => {
   const file = req.file;
   const userId = req.user.id;
-  const body = req.body;
+  const body = JSON.parse(req.body.data);
+  console.log("body", body);
 
   if (!file) {
     return sendResponse(res, {
@@ -57,7 +58,7 @@ const deleteEvent = catchAsync(async (req: Request, res: Response) => {
 const updateEvent = catchAsync(async (req: Request, res: Response) => {
   const { eventId } = req.params;
   const userId = req.user.id;
-  const body = req.body;
+  const body = JSON.parse(req.body.data);
 
   let imageUrl;
   if (req.file) {

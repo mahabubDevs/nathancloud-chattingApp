@@ -4,8 +4,8 @@ export interface CreateEventDto {
   lat: number;
   long: number;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   startTime: string;
   endTime: string;
   role: 'PUBLIC' | 'PRIVATE';
@@ -19,8 +19,8 @@ export interface EventResponse {
   lat: number;
   long: number;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   startTime: string;
   endTime: string;
   role: string;

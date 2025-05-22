@@ -70,8 +70,8 @@ model Event {
   lat          Float
   long         Float
   description  String
-  startDate         DateTime
-  endDate         DateTime
+  startDate         String
+  endDate         String
   startTime         String
   endTime         String
   role             EventRole       @default(PUBLIC)
