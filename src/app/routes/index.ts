@@ -7,6 +7,7 @@ import { paymentRoutes } from "../modules/Payment/Payment.routes";
 import { SuperLikeRouter } from "../modules/SuperLike/SuperLike.routes";
 import { userRoutes } from "../modules/User/user.route";
 import { likeRouter } from "../modules/Like/Like.routes";
+import { EventRoutes } from "../modules/Events/Event.routes";
 
 const router = express.Router();
 
@@ -18,6 +19,10 @@ const moduleRoutes = [
   {
     path: "/auth",
     route: AuthRoutes,
+  },
+  {
+    path: "/event",
+    route: EventRoutes,
   },
   {
     path: "/like",

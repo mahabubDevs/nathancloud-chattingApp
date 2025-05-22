@@ -159,15 +159,18 @@ const updateProfile = async (req: Request) => {
   if (!existingUser) {
     throw new ApiError(404, "User not found");
   }
+  console.log("existingUser", files);
   if (files.images) {
 
     images = await Promise.all(
       files?.images?.map(async (file: any) => {
         const response = await fileUploader.uploadToDigitalOcean(file);
+        console.log(response, "response");
         return { url: response.Location }; // Extract and return only the file URL
       })
     );
   }
+  console.log("images", images);
   if (stringData) {
     parseData = JSON.parse(stringData);
   }
