@@ -4,6 +4,7 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { EventService } from "./Event.service";
 import { fileUploader } from "../../../helpars/fileUploader";
+import ApiError from "../../../errors/ApiErrors";
 
 const createEvent = catchAsync(async (req: Request, res: Response) => {
   const file = req.file;
@@ -33,6 +34,32 @@ const createEvent = catchAsync(async (req: Request, res: Response) => {
 const getEvents = catchAsync(async (req: Request, res: Response) => {
   const userId = req.user.id;
   const result = await EventService.getEvents(userId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Events fetched successfully!",
+    data: result,
+  });
+});
+
+const getAllEvents = catchAsync(async (req: Request, res: Response) => {
+  const result = await EventService.getAllEvents();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Events fetched successfully!",
+    data: result,
+  });
+});
+
+const getPublicEventById = catchAsync(async (req: Request, res: Response) => {
+  const { eventId } = req.params;
+  const result = await EventService.getPublicEventById(eventId);
+  if (!result) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Event not found or not public");
+  }
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -79,6 +106,8 @@ const updateEvent = catchAsync(async (req: Request, res: Response) => {
 export const EventController = {
   createEvent,
   getEvents,
+  getAllEvents,
+  getPublicEventById,
   deleteEvent,
   updateEvent,
 };

@@ -35,6 +35,25 @@ const getUsers = catchAsync(async (req: Request, res: Response) => {
 
 
 // get all user form db
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, ["gender", "distance", "lat", "long", "ageMin", "ageMax"]);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+  const result = await userService.getAllUser(filters, options);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Users retrieved successfully!",
+    data: result,
+  });
+});
+
+
+
+
+
+// get all user form db
 const updateProfile = catchAsync(async (req: Request & {user?:any}, res: Response) => {
   const user = req?.user;
 
@@ -103,6 +122,7 @@ const getUserForHomePage = catchAsync(async (req: Request, res: Response) => {
 export const userController = {
   createUser,
   getUsers,
+  getAllUsers,
   updateProfile,
   updateUser,
   getRandomUser,

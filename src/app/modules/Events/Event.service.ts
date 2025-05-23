@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiErrors";
 import prisma from "../../../shared/prisma";
 import { CreateEventDto } from "./Event.interface";
 
@@ -15,6 +17,24 @@ export const EventService = {
   async getEvents(userId: string) {
     return await prisma.event.findMany({
       where: { userId },
+    });
+  },
+
+  async getAllEvents() {
+    return await prisma.event.findMany({
+      where: { visibility: "PUBLIC" },
+      // orderBy: { createdAt: "desc" },
+    });
+  },
+
+  async getPublicEventById(eventId: string) {
+    
+    return await prisma.event.findMany({
+      where: { 
+        id: eventId,
+        visibility: "PUBLIC" 
+      },
+      // orderBy: { createdAt: "desc" },
     });
   },
 

@@ -15,6 +15,8 @@ import { IUser, IUserFilterRequest } from "./user.interface";
 import { jwtHelpers } from "../../../helpars/jwtHelpers";
 import { PassThrough } from "stream";
 import { calculateAge } from "../../../shared/calculateAge";
+import { Datetime } from "aws-sdk/clients/costoptimizationhub";
+// import  {calculateDistance} from "../../../shared/calculateDistance";
 
 // Create a new user in the database.
 const createUserIntoDb = async (payload: User) => {
@@ -140,6 +142,100 @@ const getUsersFromDb = async (
     data: result,
   };
 };
+
+const getAllUser = async (
+  filters: {
+    gender?: string;
+    distance?: number;
+    lat?: number;
+    long?: number;
+    ageMin?: number;
+    ageMax?: number;
+  },
+  options: {
+    limit?: number;
+    page?: number;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+) => {
+  const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
+  const { gender, distance, lat, long, ageMin, ageMax } = filters;
+
+  const skip = (page - 1) * limit;
+
+  const whereConditions: Prisma.UserWhereInput = {};
+
+  if (gender) {
+    whereConditions.gender = gender;
+  }
+
+
+  if (ageMin || ageMax) {
+    const today = new Date();
+    
+    const maxDob = ageMin
+      ? new Date(today.getFullYear() - ageMin, today.getMonth(), today.getDate())
+      : undefined;
+
+    const minDob = ageMax
+      ? new Date(today.getFullYear() - ageMax - 1, today.getMonth(), today.getDate() + 1)
+      : undefined;
+
+    whereConditions.dob = {
+      ...(minDob && { gte: minDob }),
+      ...(maxDob && { lte: maxDob }),
+    };
+  }
+
+  const users = await prisma.user.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      dob: true,
+      gender: true,
+      lat: true,
+      long: true,
+    },
+  });
+
+  const total = await prisma.user.count({
+    where: whereConditions,
+  });
+
+
+  const filteredUsers = users.filter((user) => {
+    if (
+      distance && lat && long &&
+      user.lat !== null && user.long !== null
+    ) {
+      const userLat = parseFloat(user.lat);
+      const userLong = parseFloat(user.long);
+      const userDistance = calculateDistance(lat, long, userLat, userLong);
+      return userDistance <= distance;
+    }
+
+    return true;
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: filteredUsers,
+  };
+};
+
+
 
 // update profile by user won profile uisng token or email and id
 const updateProfile = async (req: Request) => {
@@ -598,6 +694,7 @@ if(user?.dob){
 export const userService = {
   createUserIntoDb,
   getUsersFromDb,
+  getAllUser,
   updateProfile,
   updateUserIntoDb,
   getRandomUser,

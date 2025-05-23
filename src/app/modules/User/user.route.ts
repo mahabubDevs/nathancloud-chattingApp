@@ -18,6 +18,7 @@ router.post(
 router.get("/", userController.getUsers);
 router.get("/get-random-user", userController.getRandomUser);
 router.get("/get-user-home",auth(), userController.getUserForHomePage);
+router.get("/get-all-user",auth(), userController.getAllUsers);
 router.get("/:id", userController.getSingleUserById);
 
 // *!profile user

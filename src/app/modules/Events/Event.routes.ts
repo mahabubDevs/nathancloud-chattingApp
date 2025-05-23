@@ -9,6 +9,8 @@ const router = express.Router();
 // ✅ Apply authentication middleware
 router.post("/", auth(), fileUploader.uploadSingle, EventController.createEvent);
 router.get("/", auth(), EventController.getEvents);
+router.get("/all", auth(), EventController.getAllEvents);
+router.get("/:eventId", auth(), EventController.getPublicEventById);
 router.delete("/:eventId", auth(), EventController.deleteEvent);
 router.put("/:eventId", auth(), fileUploader.uploadSingle, EventController.updateEvent);
 

@@ -8,7 +8,8 @@ export interface CreateEventDto {
   endDate: string;
   startTime: string;
   endTime: string;
-  role: 'PUBLIC' | 'PRIVATE';
+  visibility: 'PUBLIC' | 'PRIVATE';
+  role: string;
 }
 
 export interface EventResponse {
@@ -23,6 +24,7 @@ export interface EventResponse {
   endDate: string;
   startTime: string;
   endTime: string;
+  visibility: string;
   role: string;
   userId: string;
   createdAt: Date;

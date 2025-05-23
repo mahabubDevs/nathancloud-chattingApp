@@ -12,24 +12,24 @@ model User {
   email             String         @unique
   phoneNumber       String
   password          String
-  fcmToken          String?
+  fcmToken          String?        @default("")
   role              UserRole       @default(USER)
   isPayment         Boolean        @default(false)
-  customerId        String?
+  customerId        String?        @default("")
   priceId           String?
   planName          String?
   subscriptionId    String?
   otp               Int?
   name              String?
-  ethnicity         String?
+  ethnicity         String?       @default("")
   lat               String?
   long              String?
   gender            String?
-  facebook          String @default("")
-  twitter           String @default("")
-  instagram         String @default("")
-  linkedin          String @default("")
-  tiktok            String @default("")
+  facebook          String         @default("")
+  twitter           String         @default("")
+  instagram         String         @default("")
+  linkedin          String         @default("")
+  tiktok            String         @default("")
   dob               DateTime?
   hight             String?
   weight            String?
@@ -53,40 +53,37 @@ model User {
   disLikeReceived   DisLike[]      @relation("receiver")
   SuperLikeSend     SuperLike[]    @relation("sender")
   SuperLikeReceived SuperLike[]    @relation("receiver")
-  roomsSent     Room[]         @relation("SenderRelation")
-  roomsReceived Room[]         @relation("ReceiverRelation")
-  chatsSent     Chat[]         @relation("SenderRelation")
-  chatsReceived Chat[]         @relation("ReceiverRelation")
-  events        Event[]        @relation("User")
+  roomsSent         Room[]         @relation("SenderRelation")
+  roomsReceived     Room[]         @relation("ReceiverRelation")
+  chatsSent         Chat[]         @relation("SenderRelation")
+  chatsReceived     Chat[]         @relation("ReceiverRelation")
+  events            Event[]        @relation("User")
 
   @@map("users")
 }
 
 model Event {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  image      String
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  image       String
   title       String
-  address      String
-  lat          Float
-  long         Float
-  description  String
-  startDate         String
-  endDate         String
-  startTime         String
-  endTime         String
-  role             EventRole       @default(PUBLIC)
-  userId       String   @db.ObjectId
-  
-  user         User     @relation("User", fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  address     String
+  lat         Float
+  long        Float
+  description String
+  startDate   String
+  endDate     String
+  startTime   String
+  endTime     String
+  visibility  eventVisibility @default(PUBLIC)
+  role        String          @default("event")
+  userId      String          @db.ObjectId
+
+  user      User     @relation("User", fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("events")
 }
-
-
-
-
 
 model Price {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
@@ -219,8 +216,7 @@ enum UserStatus {
   BLOCKED
 }
 
-enum EventRole {
+enum eventVisibility {
   PRIVATE
   PUBLIC
 }
-
