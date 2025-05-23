@@ -1,4 +1,6 @@
 import { UserRole } from "@prisma/client";
+import { eventVisibility } from "@prisma/client";
+
 
 export interface IUser {
   id?: string;
@@ -10,6 +12,9 @@ export interface IUser {
   profession:string;
   promoCode:string;
   isDeleted:boolean;
+   dob: Date;         
+   lat?: string | null;
+  long?: string | null; 
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -54,6 +54,9 @@ const getAllEvents = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+
+
+
 const getPublicEventById = catchAsync(async (req: Request, res: Response) => {
   const { eventId } = req.params;
   const result = await EventService.getPublicEventById(eventId);

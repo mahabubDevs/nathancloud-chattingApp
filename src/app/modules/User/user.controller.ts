@@ -50,6 +50,27 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 });
 
 
+const getAllUserAndEvents = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, [
+    "gender",
+    "ageMin",
+    "ageMax",
+    "distance",
+    "lat",
+    "long",
+    "visibility", // For events
+  ]);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+  const result = await userService.getAllUserAndEvents(filters, options);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Users and Events fetched successfully!",
+    data: result,
+  });
+});
 
 
 
@@ -123,6 +144,7 @@ export const userController = {
   createUser,
   getUsers,
   getAllUsers,
+  getAllUserAndEvents,
   updateProfile,
   updateUser,
   getRandomUser,

@@ -38,6 +38,10 @@ export const EventService = {
     });
   },
 
+
+  
+
+
   async deleteEvent(eventId: string, userId: string) {
     return await prisma.event.deleteMany({
       where: {
@@ -46,6 +50,9 @@ export const EventService = {
       },
     });
   },
+
+  
+
 
   async updateEvent(eventId: string, data: Partial<CreateEventDto>, imageUrl?: string) {
     return await prisma.event.update({

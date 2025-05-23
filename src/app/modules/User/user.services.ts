@@ -16,6 +16,7 @@ import { jwtHelpers } from "../../../helpars/jwtHelpers";
 import { PassThrough } from "stream";
 import { calculateAge } from "../../../shared/calculateAge";
 import { Datetime } from "aws-sdk/clients/costoptimizationhub";
+import { eventVisibility } from "@prisma/client";
 // import  {calculateDistance} from "../../../shared/calculateDistance";
 
 // Create a new user in the database.
@@ -235,6 +236,118 @@ const getAllUser = async (
   };
 };
 
+
+const getAllUserAndEvents = async (
+  filters: {
+    gender?: string;
+    distance?: number;
+    lat?: number;
+    long?: number;
+    ageMin?: number;
+    ageMax?: number;
+    visibility?: eventVisibility; // Event filter
+  },
+  options: {
+    limit?: number;
+    page?: number;
+    sortBy?: string;
+    sortOrder?: string;
+  }
+) => {
+  const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
+  const { gender, distance, lat, long, ageMin, ageMax, visibility } = filters;
+
+  const skip = (page - 1) * limit;
+
+  const userWhere: Prisma.UserWhereInput = {};
+  if (gender) userWhere.gender = gender;
+
+  if (ageMin || ageMax) {
+    const today = new Date();
+    const maxDob = ageMin
+      ? new Date(today.getFullYear() - ageMin, today.getMonth(), today.getDate())
+      : undefined;
+    const minDob = ageMax
+      ? new Date(today.getFullYear() - ageMax - 1, today.getMonth(), today.getDate() + 1)
+      : undefined;
+
+    userWhere.dob = {
+      ...(minDob && { gte: minDob }),
+      ...(maxDob && { lte: maxDob }),
+    };
+  }
+
+  // 1. Fetch users
+  const users = await prisma.user.findMany({
+    where: userWhere,
+    skip,
+    take: limit,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      dob: true,
+      gender: true,
+      lat: true,
+      long: true,
+    },
+  });
+
+  const totalUsers = await prisma.user.count({ where: userWhere });
+
+  const filteredUsers = users.filter((user) => {
+    if (distance && lat && long && user.lat !== null && user.long !== null) {
+      const userDistance = calculateDistance(lat, long, parseFloat(user.lat), parseFloat(user.long));
+      return userDistance <= distance;
+    }
+    return true;
+  });
+
+  // 2. Fetch events
+  const eventWhere: Prisma.EventWhereInput = {};
+  if (visibility) eventWhere.visibility = visibility;
+
+  const events = await prisma.event.findMany({
+    where: eventWhere,
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      visibility: true,
+      lat: true,
+      long: true,
+      createdAt: true,
+    },
+  });
+
+  const filteredEvents = events.filter((event) => {
+  if (distance && lat && long && event.lat !== null && event.long !== null) {
+    const eventLat = typeof event.lat === "string" ? parseFloat(event.lat) : event.lat;
+    const eventLong = typeof event.long === "string" ? parseFloat(event.long) : event.long;
+
+    const eventDistance = calculateDistance(lat, long, eventLat, eventLong);
+    return eventDistance <= distance;
+  }
+  return true;
+});
+
+
+  return {
+    meta: {
+      page,
+      limit,
+      totalUsers,
+      totalEvents: filteredEvents.length,
+    },
+    data: {
+      users: filteredUsers,
+      events: filteredEvents,
+    },
+  };
+};
 
 
 // update profile by user won profile uisng token or email and id
@@ -695,6 +808,7 @@ export const userService = {
   createUserIntoDb,
   getUsersFromDb,
   getAllUser,
+  getAllUserAndEvents,
   updateProfile,
   updateUserIntoDb,
   getRandomUser,
