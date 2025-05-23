@@ -289,8 +289,7 @@ const getAllUserAndEvents = async (
       id: true,
       name: true,
       email: true,
-      dob: true,
-      gender: true,
+      role: true,
       lat: true,
       long: true,
     },
@@ -315,7 +314,7 @@ const getAllUserAndEvents = async (
     select: {
       id: true,
       title: true,
-      description: true,
+      role: true,
       visibility: true,
       lat: true,
       long: true,
