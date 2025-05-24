@@ -8,6 +8,7 @@ import { SuperLikeRouter } from "../modules/SuperLike/SuperLike.routes";
 import { userRoutes } from "../modules/User/user.route";
 import { likeRouter } from "../modules/Like/Like.routes";
 import { EventRoutes } from "../modules/Events/Event.routes";
+import { ReviewRoutes } from "../modules/Review/review.route";
 
 const router = express.Router();
 
@@ -47,6 +48,10 @@ const moduleRoutes = [
   {
     path: "/notifications",
     route: notificationsRoute,
+  },
+  {
+    path: "/review",
+    route: ReviewRoutes,
   },
 ];
 
