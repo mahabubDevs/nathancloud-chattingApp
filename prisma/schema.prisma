@@ -59,6 +59,9 @@ model User {
   chatsReceived     Chat[]         @relation("ReceiverRelation")
   events            Event[]        @relation("User")
   Review            Review[]
+  // Groups            Group[]        @relation("GroupMembers")
+
+  groupMembers      GroupMember[]  @relation("GroupMembers")
 
   @@map("users")
 }
@@ -235,4 +238,51 @@ enum UserStatus {
 enum eventVisibility {
   PRIVATE
   PUBLIC
+}
+
+
+
+
+// testing group creation and chatting
+
+model Group {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  visibility  String   @default("PUBLIC") // or PRIVATE
+  // description String?
+  // image       String?
+  createdBy  String   @db.ObjectId 
+  updatedBy   DateTime @updatedAt
+  members     GroupMember[]   @relation("GroupMembers")
+  chats       GroupMessage[]   @relation("GroupChats")
+
+  @@map("groups") 
+}
+
+model GroupMember {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  groupId    String   @db.ObjectId
+  userId     String   @db.ObjectId
+  addedBy   String   @db.ObjectId
+  addedAt   DateTime @default(now())
+ // User ID of the person who added this member
+  group      Group    @relation("GroupMembers", fields: [groupId], references: [id])
+  user       User     @relation(name:"GroupMembers",fields: [userId], references: [id])
+  chat    GroupMessage[] 
+
+  @@map("groupMembers")
+}
+
+model GroupMessage {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  groupId    String   @db.ObjectId
+  senderId   String   @db.ObjectId
+  message    String
+  images     String[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  group      Group    @relation("GroupChats", fields: [groupId], references: [id])
+  sender     GroupMember     @relation(fields: [senderId], references: [id])
+
+
 }
