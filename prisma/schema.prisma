@@ -16,32 +16,32 @@ model User {
   role              UserRole       @default(USER)
   isPayment         Boolean        @default(false)
   customerId        String?        @default("")
-  priceId           String?
-  planName          String?
-  subscriptionId    String?
-  otp               Int?
-  name              String?
+  priceId           String?         @default("")
+  planName          String? @default("")
+  subscriptionId    String?@default("")
+  otp               Int? @default(12345)
+  name              String?@default("")
   ethnicity         String?        @default("")
-  lat               String?
-  long              String?
-  gender            String?
+  lat               String?@default("")
+  long              String?@default("")
+  gender            String?@default("")
   facebook          String         @default("")
   twitter           String         @default("")
   instagram         String         @default("")
   linkedin          String         @default("")
   tiktok            String         @default("")
   dob               DateTime?
-  hight             String?
-  weight            String?
-  sexOrientation    String?
-  education         String?
-  distance          String?
+  hight             String? @default("")
+  weight            String? @default("")
+  sexOrientation    String? @default("")
+  education         String? @default("")
+  distance          String? @default("")
   interest          String[]
   favoritesFood     String[]
-  photos            Json?
-  about             String?
+  photos            Json? @default("[]")
+  about             String? @default("")
   status            UserStatus     @default(INACTIVE)
-  expirationOtp     DateTime?
+  expirationOtp     DateTime?       @default(now())
   isCompleteProfile Boolean        @default(false)
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
@@ -97,12 +97,12 @@ model Price {
   priceId       String
   productId     String
   features      Json
-  description   String?
+  description   String?  @default("")
   currency      String
   interval      String
   active        Boolean
   intervalCount Int
-  freeTrailDays Int?
+  freeTrailDays Int?  @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -111,15 +111,15 @@ model Price {
 
 model PaymentInfo {
   id                 String    @id @default(auto()) @map("_id") @db.ObjectId
-  userEmail          String?
-  subscriptionPlane  String?
-  subscriptionId     String?
-  date               DateTime?
-  amount             Float?
-  tranId             String?
-  status             String?
-  hosted_invoice_url String?
-  invoice_pdf        String?
+  userEmail          String? @default("")
+  subscriptionPlane  String? @default("")
+  subscriptionId     String? @default("")
+  date               DateTime? @default(now())
+  amount             Float? @default(0)
+  tranId             String? @default("")
+  status             String? @default("PENDING")
+  hosted_invoice_url String? @default("")
+  invoice_pdf        String? @default("")
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
