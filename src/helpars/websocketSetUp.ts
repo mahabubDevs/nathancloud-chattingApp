@@ -397,3 +397,76 @@ function broadcastToAll(wss: WebSocketServer, message: object) {
     }
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// // authenticate event 
+
+// {
+//   "event": "authenticate",
+//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4MzRhZjgwM2Y1ZjZiNDZkYzczNGQzZSIsImVtYWlsIjoic2Fzb2xvdjk3NEBvZnVsYXIuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NDgyODMyODQsImV4cCI6MTc3OTgxOTI4NH0.tXjUf2Uljdj008YmmYu8R3CRyEh5LWSF9lG4re0jfKs"
+// }
+
+// // single message event 
+
+// {
+//     "event": "message",
+//     "receiverId": "934593023490",
+//     "message": " this is single message",
+//     "images": []
+// }
+
+// // project event , own data seen 
+// {
+//     "event": "project"
+// }
+
+
+
+// // fetchChats event 
+
+// {
+//     "event": "fetchChats",
+//     "receiverId": "395839458392"
+// }
+
+// // unReadMessages 
+
+// {
+//     "event": "unReadMessages",
+//     "receiverId": "935903890523"
+// }
+
+// //messageList single 
+
+// {
+//     "event": "messageList",
+
+// }
+
+// //groupMessage 
+
+// {
+//     "event": "groupMessage",
+//     "groupId": "345098902",
+//     "message": "this is test",
+//     "images": []
+// }
+
+
+// //fetchGroupMessages
+
+// {
+//     "event": "fetchGroupMessages",
+//     "groupId": "83459203859208"
+// }
+
