@@ -247,17 +247,17 @@ const getAllUserAndEvents = async (
     ageMax?: number;
     visibility?: eventVisibility; // Event filter
   },
-  options: {
-    limit?: number;
-    page?: number;
-    sortBy?: string;
-    sortOrder?: string;
-  }
+  // options: {
+  //   limit?: number;
+  //   page?: number;
+  //   sortBy?: string;
+  //   sortOrder?: string;
+  // }
 ) => {
-  const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
+  // const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
   const { gender, distance, lat, long, ageMin, ageMax, visibility } = filters;
 
-  const skip = (page - 1) * limit;
+  // const skip = (page - 1) * limit;
 
   const userWhere: Prisma.UserWhereInput = {};
   if (gender) userWhere.gender = gender;
@@ -280,11 +280,11 @@ const getAllUserAndEvents = async (
   // 1. Fetch users
   const users = await prisma.user.findMany({
     where: userWhere,
-    skip,
-    take: limit,
-    orderBy: {
-      [sortBy]: sortOrder,
-    },
+    // skip,
+    // take: limit,
+    // orderBy: {
+    //   [sortBy]: sortOrder,
+    // },
     select: {
       id: true,
       name: true,
@@ -336,8 +336,8 @@ const getAllUserAndEvents = async (
 
   return {
     meta: {
-      page,
-      limit,
+      // page,
+      // limit,
       totalUsers,
       totalEvents: filteredEvents.length,
     },
