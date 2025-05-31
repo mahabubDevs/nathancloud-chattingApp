@@ -32,8 +32,8 @@ const getAllMyLikeIds = catchAsync(async (req, res) => {
 const getAllMyLikeUsers = catchAsync(async (req, res) => {
     const user=req.user;
     const filters = pick(req.query,likeFilterableFields );
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
-    const result = await LikeService.getAllMyLikeUsers(user as JwtPayload,filters,options);
+    // const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
+    const result = await LikeService.getAllMyLikeUsers(user as JwtPayload,filters);
     sendResponse(res, {
       success: true,
       statusCode: 200,
