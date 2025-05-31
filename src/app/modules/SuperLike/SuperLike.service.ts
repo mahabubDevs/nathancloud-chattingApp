@@ -196,10 +196,10 @@ const getAllMySuperLikeUsers = async (user: JwtPayload) => {
 const getAllMySuperLikedUsers = async (
   user: JwtPayload,
   params: IUserFilterRequest,
-  options: IPaginationOptions
+  // options: IPaginationOptions
 ) => {
   // Calculate pagination
-  const { page, limit, skip } = paginationHelper.calculatePagination(options);
+  // const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, minAge, maxAge, distanceRange = 40075, ...filterData } = params;
 
  
@@ -324,12 +324,12 @@ const getAllMySuperLikedUsers = async (
     .filter((user) => user !== null); 
 
   
-  const paginatedUsers = usersWithinDistance.slice(skip, skip + limit);
+  const paginatedUsers = usersWithinDistance.slice();
 
   return {
     meta: {
-      page,
-      limit,
+      // page,
+      // limit,
       total: usersWithinDistance.length,
     },
     data: paginatedUsers,
