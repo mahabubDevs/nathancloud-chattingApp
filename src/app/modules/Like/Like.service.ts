@@ -125,10 +125,10 @@ const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
 const getAllMyLikeUsers = async (
   user: JwtPayload,
   params: IUserFilterRequest,
-
+  options: IPaginationOptions
 ) => {
 
-  // const { page, limit, skip } = paginationHelper.calculatePagination(options);
+  const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, minAge, maxAge,    distanceRange = 40075, ...filterData } = params;
 
  
@@ -257,12 +257,12 @@ const getAllMyLikeUsers = async (
     })
     .filter((user) => user !== null); // Remove null values
   // Apply pagination after filtering by distance
-  const paginatedUsers = usersWithinDistance.slice();
+  const paginatedUsers = usersWithinDistance.slice(skip, skip + limit);
 
   return {
     meta: {
-      // page,
-      // limit,
+      page,
+      limit,
       total: usersWithinDistance.length,
     },
     data: paginatedUsers,
@@ -274,7 +274,7 @@ const getAllMyLikeUsers = async (
 const getPeerLikes = async (
   user: JwtPayload,
   params: IUserFilterRequest,
-  // options: IPaginationOptions
+  options: IPaginationOptions
 ) => {
   // const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, minAge, maxAge, distanceRange = 40075, ...filterData } = params;
