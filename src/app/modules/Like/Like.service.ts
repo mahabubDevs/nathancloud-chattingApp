@@ -276,7 +276,7 @@ const getPeerLikes = async (
   params: IUserFilterRequest,
   options: IPaginationOptions
 ) => {
-  const { page, limit, skip } = paginationHelper.calculatePagination(options);
+  // const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, minAge, maxAge, distanceRange = 40075, ...filterData } = params;
 
   const authUser = await prisma.user.findUnique({
@@ -390,12 +390,12 @@ const getPeerLikes = async (
     })
     .filter((user) => user !== null);
 
-  const paginatedPeerLikes = filteredPeerLikes.slice(skip, skip + limit);
+  const paginatedPeerLikes = filteredPeerLikes.slice();
 
   return {
     meta: {
-      page,
-      limit,
+      // page,
+      // limit,
       total: filteredPeerLikes.length,
     },
     data: paginatedPeerLikes,

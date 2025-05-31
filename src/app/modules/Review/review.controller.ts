@@ -10,7 +10,7 @@ export const createReview = catchAsync(async (req:Request, res: Response) => {
     const userId = req.user.id;
   console.log("userId", userId);
   const reviewData = req.body;
-
+console.log("reviewData", reviewData);
   if (!userId) {
       return res
         .status(httpStatus.UNAUTHORIZED)
