@@ -22,9 +22,9 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
 const getUsers = catchAsync(async (req: Request, res: Response) => {
 
   const filters = pick(req.query, userFilterableFields);
-  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
+  // const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder'])
 
-  const result = await userService.getUsersFromDb(filters, options);
+  const result = await userService.getUsersFromDb(filters);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -37,9 +37,9 @@ const getUsers = catchAsync(async (req: Request, res: Response) => {
 // get all user form db
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, ["gender", "distance", "lat", "long", "ageMin", "ageMax"]);
-  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  // const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
-  const result = await userService.getAllUser(filters, options);
+  const result = await userService.getAllUser(filters);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

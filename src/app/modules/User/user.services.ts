@@ -79,9 +79,9 @@ const createUserIntoDb = async (payload: User) => {
 // reterive all users from the database also searcing anf filetering
 const getUsersFromDb = async (
   params: IUserFilterRequest,
-  options: IPaginationOptions
+
 ) => {
-  const { page, limit, skip } = paginationHelper.calculatePagination(options);
+  // const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
   const andCondions: Prisma.UserWhereInput[] = [];
@@ -110,15 +110,15 @@ const getUsersFromDb = async (
 
   const result = await prisma.user.findMany({
     where: whereConditons,
-    skip,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? {
-            [options.sortBy]: options.sortOrder,
-          }
-        : {
-            createdAt: "desc",
-          },
+    // skip,
+    // orderBy:
+    //   options.sortBy && options.sortOrder
+    //     ? {
+    //         [options.sortBy]: options.sortOrder,
+    //       }
+    //     : {
+    //         createdAt: "desc",
+    //       },
     select: {
       id: true,
       email: true,
@@ -136,9 +136,9 @@ const getUsersFromDb = async (
   }
   return {
     meta: {
-      page,
-      limit,
-      total,
+      // page,
+      // limit,
+      // total,
     },
     data: result,
   };
@@ -153,17 +153,17 @@ const getAllUser = async (
     ageMin?: number;
     ageMax?: number;
   },
-  options: {
-    limit?: number;
-    page?: number;
-    sortBy?: string;
-    sortOrder?: string;
-  }
+  // options: {
+  //   limit?: number;
+  //   page?: number;
+  //   sortBy?: string;
+  //   sortOrder?: string;
+  // }
 ) => {
-  const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
+  // const { page = 1, limit = 10, sortBy = "createdAt", sortOrder = "desc" } = options;
   const { gender, distance, lat, long, ageMin, ageMax } = filters;
 
-  const skip = (page - 1) * limit;
+  // const skip = (page - 1) * limit;
 
   const whereConditions: Prisma.UserWhereInput = {};
 
@@ -191,11 +191,11 @@ const getAllUser = async (
 
   const users = await prisma.user.findMany({
     where: whereConditions,
-    skip,
-    take: limit,
-    orderBy: {
-      [sortBy]: sortOrder,
-    },
+    // skip,
+    // take: limit,
+    // orderBy: {
+    //   [sortBy]: sortOrder,
+    // },
     select: {
       id: true,
       name: true,
@@ -228,9 +228,9 @@ const getAllUser = async (
 
   return {
     meta: {
-      page,
-      limit,
-      total,
+      // page,
+      // limit,
+      // total,
     },
     data: filteredUsers,
   };
