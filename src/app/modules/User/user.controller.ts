@@ -124,10 +124,10 @@ const id = req.params.id;
 // Controller for fetching users for the home page
 const getUserForHomePage = catchAsync(async (req: Request, res: Response) => {
   const authUserId = req.user.id; // Extract authenticated user's ID from request (assuming middleware sets req.user)
-  // const page = parseInt(req.query.page as string) || 1; // Default page 1
-  // const limit = parseInt(req.query.limit as string) || 20; // Default limit 20
-  // const sortBy = (req.query.sortBy as string) || "createdAt"; // Default sorting by "createdAt"
-  // const sortOrder = (req.query.sortOrder as string) || "asc"; // Default sorting order ascending
+  const page = parseInt(req.query.page as string) || 1; // Default page 1
+  const limit = parseInt(req.query.limit as string) || 20; // Default limit 20
+  const sortBy = (req.query.sortBy as string) || "createdAt"; // Default sorting by "createdAt"
+  const sortOrder = (req.query.sortOrder as string) || "asc"; // Default sorting order ascending
 
   const result = await userService.getUserForHomePage(authUserId);
 

@@ -47,8 +47,8 @@ const getAllMyLikeUsers = catchAsync(async (req, res) => {
   const getPeerLikes = catchAsync(async (req, res) => {
     const user = req.user;
     const filters = pick(req.query, likeFilterableFields);
-    const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-    const result = await LikeService.getPeerLikes(user, filters, options);
+    // const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = await LikeService.getPeerLikes(user, filters);
 
     sendResponse(res, {
         success: true,

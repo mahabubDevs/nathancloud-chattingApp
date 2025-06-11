@@ -274,7 +274,7 @@ const getAllMyLikeUsers = async (
 const getPeerLikes = async (
   user: JwtPayload,
   params: IUserFilterRequest,
-  options: IPaginationOptions
+  // options: IPaginationOptions
 ) => {
   // const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, minAge, maxAge, distanceRange = 40075, ...filterData } = params;
