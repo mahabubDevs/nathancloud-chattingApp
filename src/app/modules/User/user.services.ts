@@ -596,12 +596,12 @@ const getRandomUser = async () => {
 
 const getUserForHomePage = async (
   authUserId: string,
-  page: number = 1,
-  limit: number = 20,
-  sortBy: string = "createdAt",
-  sortOrder: string = "asc"
+  // page: number = 1,
+  // limit: number = 20,
+  // sortBy: string = "createdAt",
+  // sortOrder: string = "asc"
 ) => {
-  const offset = (page - 1) * limit;
+  // const offset = (page - 1) * limit;
 
   // Fetch authenticated user's details
   const authUser = await prisma.user.findUnique({
@@ -719,30 +719,30 @@ const getUserForHomePage = async (
       .filter((user) => user !== null);
 
     return {
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(allFilteredUsers.length / limit),
-        totalUsers: allFilteredUsers.length,
-        limit,
-      },
+      // pagination: {
+      //   currentPage: page,
+      //   totalPages: Math.ceil(allFilteredUsers.length / limit),
+      //   totalUsers: allFilteredUsers.length,
+      //   limit,
+      // },
       users: allFilteredUsers
-      .slice(offset, offset + limit),
+      // .slice(offset, offset + limit),
     };
   }
 
   // Pagination for the filtered users (within the distance)
-  const totalUsers = filteredUsers.length;
-  const totalPages = Math.ceil(totalUsers / limit);
+  // const totalUsers = filteredUsers.length;
+  // const totalPages = Math.ceil(totalUsers / limit);
 
   return {
-    pagination: {
-      currentPage: page,
-      totalPages,
-      totalUsers,
-      limit,
-    },
+    // pagination: {
+    //   currentPage: page,
+    //   totalPages,
+    //   totalUsers,
+    //   limit,
+    // },
     users: filteredUsers
-    .slice(offset, offset + limit),
+    // .slice(offset, offset + limit),
   };
 };
 
