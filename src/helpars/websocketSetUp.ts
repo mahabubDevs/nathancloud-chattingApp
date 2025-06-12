@@ -216,22 +216,27 @@ export function setupWebSocket(server: Server) {
                   id: true,
                   interest: true,
                   favoritesFood:true,
-                  lat: true,
-                  long:true,
+                  // lat: true,
+                  // long:true,
                   
                 },
               });
+
+              
 
               // Combine user info with their last message
               const userWithLastMessages = rooms.map((room) => {
                 const otherUserId =
                   room.senderId === ws.userId ? room.receiverId : room.senderId;
-                const userInfo = userInfos.find(
+                const userInfo:any = userInfos.find(
                   (userInfo) => userInfo.id === otherUserId
                 );
 
+                userInfo.photos = userInfo.photos[0]
+
                 return {
                   user: userInfo || null,
+                  // image:userInfo?.photos[0]|| null,
                   lastMessage: room.chat[0] || null,
                 };
               });
