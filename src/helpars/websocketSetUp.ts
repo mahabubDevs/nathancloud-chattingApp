@@ -214,8 +214,8 @@ export function setupWebSocket(server: Server) {
                   photos: true,
                   name: true,
                   id: true,
-                  interest: true,
-                  favoritesFood:true,
+                  // interest: true,
+                  // favoritesFood:true,
                   // lat: true,
                   // long:true,
                   
